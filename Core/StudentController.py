@@ -22,15 +22,6 @@ from Core.StudentModel import PersonalProfile
 
 student_path = "students.json"
 
-class DiningInfo:
-    def __init__(self, dining_time: str, dishes: List[Dish], remarks: str, id: str = None, location: str = "Unknown", images: List[str]=None):
-        self.id = id
-        self.dining_time = dining_time
-        self.dishes = dishes
-        self.remarks = remarks
-        self.location = location
-        self.images = images if images is not None else []
-
 class StudentController:
     """
     管理学生的控制器类。
@@ -83,7 +74,7 @@ class StudentController:
     
     def find_student_by_name(self, name: str) -> List[Student]:
         """
-        据姓名查找学生。
+        根据姓名查找学生。
 
         参数:
             name (str): 学生的姓名

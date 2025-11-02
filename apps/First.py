@@ -48,13 +48,13 @@ def get_dishes_location() -> dict:
             location['北区'] = location.get('北区',0) + 1
         elif dish.location == '南区':
             location['南区'] = location.get('南区',0) + 1
-        elif dish.location in '南堕落街':
+        elif dish.location == '南堕落街':
             location['南堕落街'] = location.get('南堕落街',0) + 1
-        elif dish.location in '北堕落街':
+        elif dish.location == '北堕落街':
             location['北堕落街'] = location.get('北堕落街',0) + 1
-        elif dish.location in '西餐厅':
+        elif dish.location == '西餐厅':
             location['西餐厅'] = location.get('西餐厅',0) + 1
-        elif dish.location in '竹韵食堂':
+        elif dish.location == '竹韵食堂':
             location['竹韵食堂'] = location.get('竹韵食堂',0) + 1
         else:
             location['其他'] = location.get('其他',0) + 1
