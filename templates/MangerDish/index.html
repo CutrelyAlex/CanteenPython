@@ -1,161 +1,121 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content-wrapper">
-    <div class="content-header">
-        <div class="container-fluid">
-            <div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h1 class="m-0">
-                            菜品详情
-                            <small>列表</small>
-                        </h1>
-                    </div>
-                </div>
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <h2 class="h5 mb-3">菜品详情列表</h2>
+        <form id="search_form" method="post" class="row g-3 align-items-end">
+            <div class="col-12 col-md-4">
+                <label for="search_name" class="form-label">菜品名称</label>
+                <input type="text" id="search_name" name="name" class="form-control" placeholder="请输入菜品名称">
             </div>
-        </div>
-    </div>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 search-collapse">
-                    <form id="search_form" method="post">
-                        <div class="form-group row">
-                            <label for="inputtext" class="col-form-label">菜品名称：</label>
-                            <div class="col-md-4">
-                                <input type="text" id="search_name" name="name" class="form-control" placeholder="请输入菜的名称"/>
-                            </div>
-                            <br>
-                            <br>
-                            <label for="inputtext" class="col-form-label">菜品位置：</label>
-                            <div class="col-md-2">
-                                <select type="text" id="search_name" name="location" class="form-control">
-                                    <option value="-1">请选择---</option>
-                                    <option value="南区">南区</option>
-                                    <option value="北区">北区</option>
-                                    <option value="南堕落街">南堕落街</option>
-                                    <option value="北堕落街">北堕落街</option>
-                                    <option value="西餐厅">西餐厅</option>
-                                    <option value="竹韵食堂">竹韵食堂</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-info"><i class="fa fa-plus"></i>查询</button>
-                                <a class="btn btn-primary single" href="{{ url_for('dish.dish_add' ) }}">
-                                    <i class="fa fa-plus"></i> 新增
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="col-12 col-md-3">
+                <label for="search_location" class="form-label">菜品位置</label>
+                <select id="search_location" name="location" class="form-select">
+                    <option value="-1">请选择---</option>
+                    <option value="南区">南区</option>
+                    <option value="北区">北区</option>
+                    <option value="南堕落街">南堕落街</option>
+                    <option value="北堕落街">北堕落街</option>
+                    <option value="西餐厅">西餐厅</option>
+                    <option value="竹韵食堂">竹韵食堂</option>
+                </select>
             </div>
-        </div>
-    </section>
-    <div class="col-sm-12 main">
-        <br>
-        <div class="panel panel-primary">
-            <div class="panel-body text-center">
-                <table class="table table-bordered table-condensed table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>位置</th>
-                        <th>菜名</th>
-                        <th>种类</th>
-                        <th>价格</th>
-                        <th>热量</th>
-                        <th>材料</th>
-                        <th>图片</th>
-                        <th>菜品描述</th>
-                        <th>功能操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for dish in dishes %}
-                        <tr>
-                            <td>{{ dish.location }}</td>
-                            <td>{{ dish.name }}</td>
-                            <td>{{ dish.category }}</td>
-                            <td>{{ dish.price }}</td>
-                            <td>{{ dish.calories }}</td>
-                            <td>{% for main in dish.allergens %}{{main}} {% endfor %}</td>
-                            <td><img src="{{ url_for('static', filename='img/') }}{{ dish.image_url }}" width="50px" height="50px"></td>
-                            <td>{{ dish.description }}</td>
-                            <td width="20%">
-                                <a class="btn btn-primary single" href="{{ url_for('dish.dish_edit', dish_id = (dish.name,dish.location)) }}">
-                                    <i class="fa fa-edit"></i> 修改
-                                </a>
-                                <a class="btn btn-danger" href="javascript:void(0)" onclick="showDeleteModal(this)">删除</a>
-                                <input type="hidden" id="id_hidden" value="{{ dish.name, dish.location }}">
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="7">无相关记录！</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            <div class="col-12 col-md-5 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">查询</button>
+                <a class="btn btn-success" href="{{ url_for('dish.dish_add') }}">新增</a>
             </div>
-        </div>
+        </form>
     </div>
 </div>
+
+<div class="card shadow-sm">
+    <div class="card-body table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+            <tr>
+                <th>位置</th>
+                <th>菜名</th>
+                <th>种类</th>
+                <th>价格</th>
+                <th>热量</th>
+                <th>材料</th>
+                <th>图片</th>
+                <th>菜品描述</th>
+                <th>功能操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for dish in dishes %}
+                <tr>
+                    <td>{{ dish.location }}</td>
+                    <td>{{ dish.name }}</td>
+                    <td>{{ dish.category }}</td>
+                    <td>{{ dish.price }}</td>
+                    <td>{{ dish.calories }}</td>
+                    <td>{% for main in dish.allergens %}{{ main }} {% endfor %}</td>
+                    <td><img src="{{ url_for('static', filename='img/') }}{{ dish.image_url }}" width="56" height="56" class="rounded"></td>
+                    <td>{{ dish.description }}</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('dish.dish_edit', dish_id=(dish.name, dish.location)) }}">修改</a>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="showDeleteModal(this)">删除</button>
+                        </div>
+                        <input type="hidden" value="{{ dish.name, dish.location }}">
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9" class="text-center text-muted">无相关记录！</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="modal fade" id="delModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-  header">
-                <h4 class="modal-title" style="float:left">提示信息</h4>
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">提示信息</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p id="info">您确认要删除当前数据吗？</p>
+                <p>您确认要删除当前数据吗？</p>
                 <input type="hidden" id="del_id">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <a id="delButton" class="btn btn-success" data-dismiss="modal">确定</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button id="delButton" type="button" class="btn btn-danger">确定</button>
             </div>
         </div>
     </div>
 </div>
+
 <script>
-    
-    // 打开模态框并设置需要删除的ID
+    const deleteModal = new bootstrap.Modal(document.getElementById("delModal"));
+
     function showDeleteModal(obj) {
-            var $tds = $(obj).parent().children();// 获取到删除元素的所在列
-            var delete_id = $($tds[2]).val();// 获取隐藏控件的ID
-            console.log(delete_id)
-            $("#del_id").val(delete_id);// 给模态框中需要删除的ID赋值
-            $("#delModal").modal({
-                backdrop: 'static',
-                keyboard: false
-            })
-        };
+        const deleteId = $(obj).closest("td").find("input[type='hidden']").val();
+        $("#del_id").val(deleteId);
+        deleteModal.show();
+    }
 
     $(function () {
-        // 模态框的确定按钮的点击事件
         $("#delButton").click(function () {
-            var id = $("#del_id").val();
-            console.log("del" + id)
-            // ajax异步删除
             $.ajax({
                 url: "/dish/dish_del",
                 type: "POST",
-                data:{dish_id: id},
+                data: {dish_id: $("#del_id").val()},
                 success: function (result) {
-                    if (result.code == "200") {
-                        $("#delModal").modal("hide");
+                    if (result.code === 200 || result.code === "200") {
                         window.location.href = "{{ url_for('dish.dish_list') }}";
-                    }
-                    else{
-                        alert(result.message);
+                    } else {
+                        alert(result.message || "删除失败");
                     }
                 }
-            })
+            });
         });
     });
 </script>

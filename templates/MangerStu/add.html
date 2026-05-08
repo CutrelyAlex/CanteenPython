@@ -1,186 +1,112 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="content-wrapper">
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-12">
-                        <ol class="breadcrumb float-sm-left">
-                            <li class="breadcrumb-item"><a href="{{ url_for('stu.stu_list') }}">学生管理</a></li>
-                            <li class="breadcrumb-item active">学生增加</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="content">
-            <style>
-                .flask-msg {
-                    position: relative;
-                    padding: 15px 15px;
-                    margin-bottom: 10px;
-                    border: 1px solid transparent;
-                    color: #004085;
-                    background-color: #cce5ff;
-                    border-color: #b8daff;
-                }
-            </style>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flash-messages">
-                        {% for message in messages %}
-                            <div class="flask-msg">{{ message }}</div>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h3 class="card-title">学生信息增加</h3>
-                            </div>
-                            <form class="form-horizontal" method="post" novalidate>
-                                <!-- {{ form.csrf_token }} -->
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="{{ form.student_id.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.student_id.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.student_id }}
-                                            <span style="color: red">{{ form.student_id.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.name.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.name.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.name }}
-                                            <span style="color: red">{{ form.name.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.password.id_for_label }}" class="col-sm-2 col-form-label">{{ form.password.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.password }}
-                                            <span style="color:red">{{ form.password.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.age.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.age.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.age }}
-                                            <span style="color: red">{{ form.age.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.gender.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.gender.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.gender }}
-                                            <span style="color: red">{{ form.gender.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.description.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.description.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.description }}
-                                            <span style="color: red">{{ form.description.errors[0] }}</span>
-                                        </div>
-                                    </div> 
-                                    <div class="form-group row">
-                                        <label for="{{ form.datetime.id_for_label }}" class="col-sm-2 col-form-label">{{ form.datetime.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.datetime }}
-                                            <span style="color: red">{{ form.datetime.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                <!-- </div>  -->
-                                    <div class="form-group row">
-                                            <label for="{{ form.dishes.id_for_label }}" class="col-sm-2 col-form-label">{{ form.dishes.label }}</label>
-                                            <div class="col-sm-10">
-                                                {{ form.dishes }}
-                                                <span style="color: red">{{ form.dishes.errors[0] }}</span>
-                                            </div>
-                                    </div>
-                                    <div class="form-group row">
-                                            <label for="{{ form.remarks.id_for_label }}" class="col-sm-2 col-form-label">{{ form.remarks.label }}</label>
-                                            <div class="col-sm-10">
-                                                {{ form.remarks }}
-                                                <span style="color: red">{{ form.remarks.errors[0] }}</span>
-                                            </div>
-                                    </div>
-                                    <div class="form-group row">
-                                            <label for="{{ form.location.id_for_label }}" class="col-sm-2 col-form-label">{{ form.location.label }}</label>
-                                            <div class="col-sm-10">
-                                                {{ form.location }}
-                                                <span style="color: red">{{ form.location.errors[0] }}</span>
-                                            </div>
-                                    </div>
-                                    <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">图片</label>
-                                            <div class="col-sm-10">
-                                                <div id="dropzone" class="dropzone"></div>
-                                            </div>
-                                    </div>
-                                    <div class="card-footer">
-                                            <button type="submit" class="btn btn-info">保存</button>
-                                            <button type="button" class="btn btn-default"><a href="{{ url_for('stu.stu_list' ) }}">返回</a>
-                                            </button>
-        {#                                    <span style="color:red">{{ info }}</span>#}
-                                    </div>
-                                <!-- </div> -->
-                            </form>
-                            <script src="{{ url_for('static', filename='plugins/dropzone/min/dropzone.min.js') }}"></script>
-                            <script>
-                                var myDropzone = new Dropzone("#dropzone", {
-                                    url: "{{ url_for('stu.upload_file') }}",
-                                    addRemoveLinks: true,
-                                    dictDefaultMessage: "拖动文件到这里或者点击上传",
-                                    dictRemoveFile: "移除文件",
-                                    dictCancelUpload: "取消上传",
-                                    dictCancelUploadConfirmation: "确定取消上传吗？",
-                                    dictMaxFilesExceeded: "最多只能上传3个文件",
-                                    maxFiles: 3,
-                                    maxFilesize: 2,
-                                    acceptedFiles: ".jpg,.png,.gif,.jpeg",
-                                    init: function () {
-                                        this.on("success", function (file, response) {
-                                            console.log(response);
-                                            file.filename = response.filename;  // 保存文件名以便删除时使用
-                                        });
-                                        this.on("error", function (file, response) {
-                                            console.log(response);
-                                        });
-                                        this.on("removedfile", function (file) {
-                                            if (file.filename) {
-                                                fetch("{{ url_for('stu.delete_file') }}", {
-                                                    method: "POST",
-                                                    headers: {
-                                                        "Content-Type": "application/json"
-                                                    },
-                                                    body: JSON.stringify({ filename: file.filename })
-                                                })
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    console.log(data);
-                                                })
-                                                .catch(error => {
-                                                    console.error("Error:", error);
-                                                });
-                                            }
-                                        });
-                                    }
-                                });
-                            </script>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>    
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h2 class="h5 mb-0">学生信息增加</h2>
     </div>
+    <form method="post" novalidate>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="{{ form.student_id.id_for_label }}" class="form-label">{{ form.student_id.label }}</label>
+                    {{ form.student_id }}
+                    <div class="text-danger small">{{ form.student_id.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+                    {{ form.name }}
+                    <div class="text-danger small">{{ form.name.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }}</label>
+                    {{ form.password }}
+                    <div class="text-danger small">{{ form.password.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.age.id_for_label }}" class="form-label">{{ form.age.label }}</label>
+                    {{ form.age }}
+                    <div class="text-danger small">{{ form.age.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.gender.id_for_label }}" class="form-label">{{ form.gender.label }}</label>
+                    {{ form.gender }}
+                    <div class="text-danger small">{{ form.gender.errors[0] }}</div>
+                </div>
+                <div class="col-12">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                    {{ form.description }}
+                    <div class="text-danger small">{{ form.description.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.datetime.id_for_label }}" class="form-label">{{ form.datetime.label }}</label>
+                    {{ form.datetime }}
+                    <div class="text-danger small">{{ form.datetime.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.dishes.id_for_label }}" class="form-label">{{ form.dishes.label }}</label>
+                    {{ form.dishes }}
+                    <div class="text-danger small">{{ form.dishes.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.remarks.id_for_label }}" class="form-label">{{ form.remarks.label }}</label>
+                    {{ form.remarks }}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.location.id_for_label }}" class="form-label">{{ form.location.label }}</label>
+                    {{ form.location }}
+                    <div class="text-danger small">{{ form.location.errors[0] }}</div>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">图片</label>
+                    <div id="dropzone" class="dropzone border rounded p-3 bg-white"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex gap-2">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('stu.stu_list') }}">返回</a>
+        </div>
+    </form>
+</div>
+
+<script src="{{ url_for('static', filename='plugins/dropzone/min/dropzone.min.js') }}"></script>
+<script>
+    var myDropzone = new Dropzone("#dropzone", {
+        url: "{{ url_for('stu.upload_file') }}",
+        addRemoveLinks: true,
+        dictDefaultMessage: "拖动文件到这里或者点击上传",
+        dictRemoveFile: "移除文件",
+        dictCancelUpload: "取消上传",
+        dictCancelUploadConfirmation: "确定取消上传吗？",
+        dictMaxFilesExceeded: "最多只能上传3个文件",
+        maxFiles: 3,
+        maxFilesize: 2,
+        acceptedFiles: ".jpg,.png,.gif,.jpeg",
+        init: function () {
+            this.on("success", function (file, response) {
+                file.filename = response.filename;
+            });
+            this.on("removedfile", function (file) {
+                if (file.filename) {
+                    fetch("{{ url_for('stu.delete_file') }}", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({filename: file.filename})
+                    });
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

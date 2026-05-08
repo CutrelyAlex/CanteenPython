@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, flash, url_for
-from Core.StudentController import StudentController,DiningInfo
+from datetime import datetime
+
+from flask import Blueprint, render_template
+
 from Core.DishController import DishController
 import Core.Statistician as Statistician
-from datetime import datetime
+from Core.StudentController import StudentController
 
 '''首页'''
 views_bp = Blueprint('views', __name__ ,url_prefix='/views')

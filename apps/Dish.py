@@ -1,8 +1,10 @@
-from Core.DishController import DishController
-from flask import Blueprint, render_template, request, jsonify,redirect, flash, url_for
-from forms import DishForm
+import ast
 import os
 
+from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+
+from Core.DishController import DishController
+from forms import DishForm
 '''
     建立菜品蓝图
     有以下几个主要函数：
@@ -14,7 +16,17 @@ import os
 
 dish_bp = Blueprint("dish", __name__, url_prefix='/dish') # 建立菜品蓝图 url: /dish/
 dishInit = DishController() # 初始化菜品对象
-UPLOAD_FOLDER = 'static\\img'
+UPLOAD_FOLDER = os.path.join("static", "img")
+
+
+def _parse_dish_id(dish_id: str):
+    try:
+        parsed = ast.literal_eval(dish_id)
+    except (ValueError, SyntaxError):
+        return None
+    if isinstance(parsed, (tuple, list)) and len(parsed) == 2:
+        return parsed[0], parsed[1]
+    return None
 
 '''菜品列表'''
 @dish_bp.route('/dish_list', methods=['GET','POST'])
@@ -42,6 +54,7 @@ def dish_add():
     f = DishForm()
     if f.validate_on_submit():
         img = request.files['img_url']
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
         if img.filename != '':
             img.save(os.path.join(UPLOAD_FOLDER,img.filename))
         exist_location = []
@@ -62,8 +75,16 @@ def dish_add():
 '''修改菜品'''
 @dish_bp.route('/dish_edit/<dish_id>', methods=['GET', 'POST'])
 def dish_edit(dish_id):
-    dish_id = dish_id.strip("()").split(",")
-    dish_obj = dishInit.find_dish_by_location(eval(dish_id[1]), eval(dish_id[0]))[0] # 根据菜名获得菜品全部信息
+    parsed_dish_id = _parse_dish_id(dish_id)
+    if not parsed_dish_id:
+        flash("菜品参数错误")
+        return redirect(url_for("dish.dish_list"))
+    dish_name, dish_location = parsed_dish_id
+    matched_dishes = dishInit.find_dish_by_location(dish_location, dish_name)
+    if not matched_dishes:
+        flash("未找到菜品")
+        return redirect(url_for("dish.dish_list"))
+    dish_obj = matched_dishes[0] # 根据菜名获得菜品全部信息
     if request.method == 'GET':
         # print(dish_obj)
         f = DishForm()
@@ -85,10 +106,11 @@ def dish_edit(dish_id):
         if f.is_submitted(): # 检测是否获取了表单,不能通过validate验证？？？
             # toListAllergens = f.allergens.data.split()
             img = request.files['img_url']
+            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
             if img.filename != '':
                 img.save(os.path.join(UPLOAD_FOLDER,img.filename))
             toListAllergens = f.allergens.data.split()
-            dishInit.update_dish(location=eval(dish_id[1]),name=eval(dish_id[0]), price=f.price.data,
+            dishInit.update_dish(location=dish_location, name=dish_name, price=f.price.data,
                                  category=f.category.data, image_url=request.files['img_url'].filename, calories=f.calories.data,
                                  allergens=toListAllergens, description=f.description.data)
             return redirect(url_for('dish.dish_list'))
@@ -98,6 +120,8 @@ def dish_edit(dish_id):
 '''删除菜品'''
 @dish_bp.route('/dish_del', methods=['GET', 'POST'])
 def dish_del():
-    remove_dish = eval(request.values.get("dish_id"))
+    remove_dish = _parse_dish_id(request.values.get("dish_id", ""))
+    if not remove_dish:
+        return jsonify({"code": 400, "message": "参数错误"}), 400
     dishInit.remove_dish(remove_dish[0], remove_dish[1])
     return jsonify({'code':200})

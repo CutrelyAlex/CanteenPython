@@ -1,5 +1,5 @@
-import json
 from typing import List, Dict, Any
+from Core.json_storage import load_json_list, save_json_list
 
 class Dish:
     '''菜品模型'''
@@ -52,15 +52,7 @@ def load_dishes_from_json(file_path: str) -> List[Dict[str, Any]]:
     返回：
         菜品Json数据列表 List[Dict[str, Any]]
     """
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            dishes_data = json.load(file)
-            if not isinstance(dishes_data, list):
-                raise ValueError("JSON 文件内容应为列表")
-            return dishes_data
-    except (FileNotFoundError, json.JSONDecodeError, ValueError) as e:
-        print(f"加载 JSON 文件时出错: {e}")
-        return []
+    return load_json_list(file_path)
 
 def convert_to_dishes(dishes_data: List[Dict[str, Any]]) -> List[Dish]:
     '''
@@ -98,9 +90,5 @@ def save_dishes_to_json(file_path: str, dishes: List[Dish]) -> None:
         dishes 菜品列表 List[Dish]
     无返回
     """
-    try:
-        dishes_data = [dish.__dict__ for dish in dishes]  # 将菜品对象转换为字典
-        with open(file_path, 'w', encoding='utf-8') as file:
-            json.dump(dishes_data, file, ensure_ascii=False, indent=4)  # 保存为 JSON 格式
-    except (IOError, TypeError) as e:
-        print(f"保存 JSON 文件时出错: {e}")
+    dishes_data = [dish.__dict__ for dish in dishes]  # 将菜品对象转换为字典
+    save_json_list(file_path, dishes_data)
