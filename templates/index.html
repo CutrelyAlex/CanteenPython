@@ -78,12 +78,12 @@
             datasets: [{label: '菜品位置', backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'], data: {{ location_dishes_num }}}]
         };
 
-        const maxTime = Math.max.apply(null, {{ time_num }});
+        const maxCount = Math.max.apply(null, {{ time_num }});
 
         new Chart($('#polarAreaChart').get(0).getContext('2d'), {
             type: 'polarArea',
             data: charData3,
-            options: {responsive: true, maintainAspectRatio: false, scale: {ticks: {beginAtZero: true, max: maxTime + 2}}}
+            options: {responsive: true, maintainAspectRatio: false, scale: {ticks: {beginAtZero: true, max: maxCount + 2}}}
         });
         new Chart($('#pieChart').get(0).getContext('2d'), {
             type: 'pie',
@@ -97,7 +97,7 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 legend: {display: false},
-                scales: {yAxes: [{ticks: {beginAtZero: true, stepSize: 1, max: maxTime + 2}}]}
+                scales: {yAxes: [{ticks: {beginAtZero: true, stepSize: 1, max: maxCount + 2}}]}
             }
         });
         new Chart($('#bar_2Chart').get(0).getContext('2d'), {

@@ -1,7 +1,7 @@
 import json
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List
 
 
 LOGGER = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ def _resolve_path(file_path: str) -> Path:
     return BASE_DIR / path
 
 
-def load_json_list(file_path: str) -> list[dict[str, Any]]:
+def load_json_list(file_path: str) -> List[Dict[str, Any]]:
     path = _resolve_path(file_path)
     try:
         with path.open("r", encoding="utf-8") as file:
@@ -28,7 +28,7 @@ def load_json_list(file_path: str) -> list[dict[str, Any]]:
         return []
 
 
-def save_json_list(file_path: str, data: list[dict[str, Any]]) -> bool:
+def save_json_list(file_path: str, data: List[Dict[str, Any]]) -> bool:
     path = _resolve_path(file_path)
     try:
         with path.open("w", encoding="utf-8") as file:

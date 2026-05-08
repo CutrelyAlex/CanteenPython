@@ -1,6 +1,7 @@
 import os
 
 from flask import Blueprint, flash, jsonify, redirect, render_template, request, send_from_directory, url_for
+from werkzeug.exceptions import BadRequest
 from werkzeug.utils import secure_filename
 
 from Core.StudentController import DiningInfo, StudentController
@@ -18,7 +19,8 @@ from forms import StuForm
         -stu_del() 删除学生页面
 '''
 
-UPLOAD_FOLDER = os.path.join("static", "img") # 图片上传路径
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "img") # 图片上传路径
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'} # 允许上传的图片格式
 SAVE_FOLDER_List = [] # 保存图片的路径列表
 stu_bp = Blueprint('stu', __name__, url_prefix='/stu') # 建立学生蓝图 url: /stu/
@@ -72,10 +74,21 @@ def upload_file():
 '''删除图片'''
 @stu_bp.route('/delete_file', methods=['POST'])
 def delete_file():
-    data = request.get_json(silent=True) or {}
+    try:
+        data = request.get_json()
+    except BadRequest:
+        return jsonify({'error': '请求格式错误'}), 400
+    if not isinstance(data, dict):
+        return jsonify({'error': '请求格式错误'}), 400
     filename = data.get('filename')
     if filename and allowed_file(filename):
-        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        safe_filename = secure_filename(filename)
+        if not safe_filename or filename != os.path.basename(filename):
+            return jsonify({'error': '文件名不合法'}), 400
+        file_path = os.path.abspath(os.path.normpath(os.path.join(UPLOAD_FOLDER, safe_filename)))
+        upload_root = os.path.abspath(UPLOAD_FOLDER)
+        if not file_path.startswith(upload_root + os.sep):
+            return jsonify({'error': '文件名不合法'}), 400
         if os.path.exists(file_path):
             os.remove(file_path)
             if file_path in SAVE_FOLDER_List:

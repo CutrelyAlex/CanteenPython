@@ -58,10 +58,11 @@
                     <td>{{ dish.description }}</td>
                     <td>
                         <div class="d-flex flex-wrap gap-2">
-                            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('dish.dish_edit', dish_id=(dish.name, dish.location)) }}">修改</a>
-                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="showDeleteModal(this)">删除</button>
+                            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('dish.dish_edit', name=dish.name, location=dish.location) }}">修改</a>
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                    data-name="{{ dish.name }}" data-location="{{ dish.location }}"
+                                    onclick="showDeleteModal(this)">删除</button>
                         </div>
-                        <input type="hidden" value="{{ dish.name, dish.location }}">
                     </td>
                 </tr>
             {% else %}
@@ -83,7 +84,8 @@
             </div>
             <div class="modal-body">
                 <p>您确认要删除当前数据吗？</p>
-                <input type="hidden" id="del_id">
+                <input type="hidden" id="del_name">
+                <input type="hidden" id="del_location">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
@@ -97,8 +99,8 @@
     const deleteModal = new bootstrap.Modal(document.getElementById("delModal"));
 
     function showDeleteModal(obj) {
-        const deleteId = $(obj).closest("td").find("input[type='hidden']").val();
-        $("#del_id").val(deleteId);
+        $("#del_name").val($(obj).data("name"));
+        $("#del_location").val($(obj).data("location"));
         deleteModal.show();
     }
 
@@ -107,9 +109,12 @@
             $.ajax({
                 url: "/dish/dish_del",
                 type: "POST",
-                data: {dish_id: $("#del_id").val()},
+                data: {
+                    name: $("#del_name").val(),
+                    location: $("#del_location").val()
+                },
                 success: function (result) {
-                    if (result.code === 200 || result.code === "200") {
+                    if (Number(result.code) === 200) {
                         window.location.href = "{{ url_for('dish.dish_list') }}";
                     } else {
                         alert(result.message || "删除失败");

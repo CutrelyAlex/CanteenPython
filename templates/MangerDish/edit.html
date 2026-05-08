@@ -6,6 +6,8 @@
         <h2 class="h5 mb-0">菜品信息修改</h2>
     </div>
     <form method="post" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="dish_name" value="{{ dish_name }}">
+        <input type="hidden" name="dish_location" value="{{ dish_location }}">
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
