@@ -1,8 +1,8 @@
-import json
 from typing import List, Dict, Any
 from datetime import datetime
 
 from Core.DishModel import Dish
+from Core.json_storage import load_json_list, save_json_list
 
 class DiningInfo:
     '''就餐信息类'''
@@ -81,15 +81,7 @@ def load_students_from_json(file_path: str) -> List[Dict[str, Any]]:
     返回：
         学生Json数据列表 List[Dict[str, Any]]
     """
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            students_data = json.load(file)
-            if not isinstance(students_data, list):
-                raise ValueError("JSON 文件内容应为列表")
-            return students_data
-    except (FileNotFoundError, json.JSONDecodeError, ValueError) as e:
-        print(f"加载 JSON 文件时出错: {e}")
-        return []
+    return load_json_list(file_path)
 
 def convert_to_students(students_data: List[Dict[str, Any]]) -> List[Student]:
     '''
@@ -140,22 +132,18 @@ def save_students_to_json(file_path: str, students: List[Student]) -> None:
         students 学生列表 List[Student]
     无返回
     """
-    try:
-        students_data = []
-        for student in students:
-            student_dict = student.__dict__.copy()
-            student_dict['profile'] = student.profile.__dict__
-            student_dict['dining_info_list'] = [
-                {
-                    'dining_time': dining_info.dining_time.isoformat(),
-                    'dishes': dining_info.dishes,
-                    'remarks': dining_info.remarks,
-                    'location': dining_info.location,
-                    'images': dining_info.images if dining_info.images is not None else []
-                } for dining_info in student.dining_info_list
-            ]
-            students_data.append(student_dict)
-        with open(file_path, 'w', encoding='utf-8') as file:
-            json.dump(students_data, file, ensure_ascii=False, indent=4)  # 保存为 JSON 格式
-    except (IOError, TypeError) as e:
-        print(f"保存 JSON 文件时出错: {e}")
+    students_data = []
+    for student in students:
+        student_dict = student.__dict__.copy()
+        student_dict['profile'] = student.profile.__dict__
+        student_dict['dining_info_list'] = [
+            {
+                'dining_time': dining_info.dining_time.isoformat(),
+                'dishes': dining_info.dishes,
+                'remarks': dining_info.remarks,
+                'location': dining_info.location,
+                'images': dining_info.images if dining_info.images is not None else []
+            } for dining_info in student.dining_info_list
+        ]
+        students_data.append(student_dict)
+    save_json_list(file_path, students_data)

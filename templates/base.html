@@ -1,99 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block title %}
-    <title>SZTU食堂管理系统</title>
+    <title>SZTU 食堂管理系统</title>
     {% endblock %}
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='plugins/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/common.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='plugins/dropzone/min/dropzone.min.css') }}">
-    <script src="{{ url_for('static',filename='plugins/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-    {% block ext_css %}
-    {% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/dropzone/min/dropzone.min.css') }}">
+    <style>
+        .app-sidebar {
+            min-height: calc(100vh - 56px);
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+        }
+    </style>
+    {% block ext_css %}{% endblock %}
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{ url_for('views.index') }}" class="nav-link">首页</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                    <i class="fas fa-expand-arrows-alt"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="{{ url_for('index') }}" class="brand-link">
-            <img src="{{ url_for('static',filename='img/logo.png' ) }}" alt="AdminLTE Logo"
-                 class="brand-image img-square elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">SZTU食堂管理系统</span>
-        </a>
-        <br>
-        <br>
-        <div class="sidebar">
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
-                    <li class="nav-header">食堂信息</li>
-                        <li class="nav-item">
-                            <a href="{{ url_for('dish.dish_list' ) }}" class="nav-link">
-                                <i class="nav-icon far fa-image"></i>
-                                <p>
-                                    菜品信息
-                                </p>
-                            </a>
-                        </li>
-                    <li class="nav-header">学生信息</li>
-                        <li class="nav-item">
-                            <a href="{{ url_for('stu.stu_list' ) }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-danger"></i>
-                                <p class="text">学生列表</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url_for('dining.dining_list' ) }}" class="nav-link">
-                                <i class="nav-icon far fa-circle text-danger"></i>
-                                <p class="text">就餐记录</p>
-                            </a>
-                        </li>
-                </ul>
-            </nav>
-        </div>
-    </aside>
-    {% block content %}
-    {% endblock %}
-    <br><br>
-    <footer class="main-footer">
-        <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-        All rights reserved.
-        <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 3.1.0-rc
-        </div>
-    </footer>
-    <aside class="control-sidebar control-sidebar-dark">
-    </aside>
+<body class="bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-semibold" href="{{ url_for('views.index') }}">SZTU 食堂管理系统</a>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-12 col-md-3 col-lg-2 p-3 app-sidebar">
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('views.index') }}" class="list-group-item list-group-item-action">首页看板</a>
+                <a href="{{ url_for('dish.dish_list') }}" class="list-group-item list-group-item-action">菜品信息</a>
+                <a href="{{ url_for('stu.stu_list') }}" class="list-group-item list-group-item-action">学生信息</a>
+                <a href="{{ url_for('dining.dining_list') }}" class="list-group-item list-group-item-action">就餐记录</a>
+            </div>
+        </aside>
+        <main class="col-12 col-md-9 col-lg-10 p-3 p-md-4">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
 </div>
-<script src="{{ url_for('static',filename='plugins/chart.js/Chart.min.js' ) }}"></script>
-<script src="{{ url_for('static',filename='js/adminlte.js' ) }}"></script>
-{% block ext_js %}
-{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/chart.js/Chart.min.js') }}"></script>
+{% block ext_js %}{% endblock %}
 </body>
 </html>

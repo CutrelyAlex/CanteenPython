@@ -1,98 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-12">
-                    <ol class="breadcrumb float-sm-left">
-                        <li class="breadcrumb-item"><a href="{{ url_for('stu.stu_list') }}">学生信息管理</a></li>
-                        <li class="breadcrumb-item active">学生信息修改</li>
-                    </ol>
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h2 class="h5 mb-0">学生信息修改</h2>
+    </div>
+    <form method="post" enctype="multipart/form-data" novalidate>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">学生学号</label>
+                    <input type="text" class="form-control" id="student_id" name="student_id" value="{{ s_id }}" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">学生名字</label>
+                    {{ form.name }}
+                    <div class="text-danger small">{{ form.name.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">学生密码</label>
+                    {{ form.password }}
+                    <div class="text-danger small">{{ form.password.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">学生年龄</label>
+                    {{ form.age }}
+                    <div class="text-danger small">{{ form.age.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.gender.id_for_label }}" class="form-label">{{ form.gender.label }}</label>
+                    {{ form.gender }}
+                    <div class="text-danger small">{{ form.gender.errors[0] }}</div>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">学生自述</label>
+                    {{ form.description }}
                 </div>
             </div>
         </div>
-    </section>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- left column -->
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">学生信息修改</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal" method="post" enctype="multipart/form-data" novalidate>
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="inputtext" class="col-sm-2 col-form-label">学生学号</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="student_id" name="student_id" value="{{ s_id }}" readonly="readonly">
-                                        <!-- {{ form.student_id }} -->
-                                        <span style="color:red">{{ form.student_id.errors[0] }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputtext" class="col-sm-2 col-form-label">学生名字</label>
-                                    <div class="col-sm-10">
-                                        {#                      <input type="text" class="form-control" id="name" name="name" value="{{ stu_id.name }}" placeholder="学生姓名">#}
-                                        {{ form.name }}
-                                        <span style="color:red">{{ form.name.errors[0] }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputtext" class="col-sm-2 col-form-label">学生密码</label>
-                                    <div class="col-sm-10">
-                                        {#                      <input type="text" class="form-control" id="password" name="password" value="{{ stu_id.password }}" placeholder="密码">#}
-                                        {{ form.password }}
-                                        <span style="color:red">{{ form.password.errors[0] }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputtext" class="col-sm-2 col-form-label">学生年龄</label>
-                                    <div class="col-sm-10">
-                                        {#                      <input type="text" class="form-control" id="age" name="age" value="{{ stu_id.profile.age }}" placeholder="年龄">#}
-                                        {{ form.age }}
-                                        <span style="color:red">{{ form.age.errors[0] }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="{{ form.gender.id_for_label }}"
-                                        class="col-sm-2 col-form-label">{{ form.gender.label }}</label>
-                                    <div class="col-sm-10">
-                                        {{ form.gender }}
-                                        <span style="color: red">{{ form.gender.errors[0] }}</span>
-                                    </div>
-                                </div>    
-                                <div class="form-group row">
-                                    <label for="inputtext" class="col-sm-2 col-form-label">学生自述</label>
-                                    <div class="col-sm-10">
-                                        {{ form.description }}
-                                        {#                      <textarea class="form-control" rows="3" id="description" name="description"  placeholder="菜的组成">{{ stu_id.profile.description }}</textarea>#}
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-info">保存</button>
-                                <button type="button" class="btn btn-default"><a href="{{ url_for('stu.stu_list' ) }}">返回</a>
-                                </button>
-{#                                    <span style="color:red">{{ info }}</span>#}
-                            </div>
-                            <!-- /.card-footer -->
-                        </form>
-                    </div>
-                    <!-- /.card -->
-                </div>
-
-                <!--/.col (right) -->
-            </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </section>
+        <div class="card-footer d-flex gap-2">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('stu.stu_list') }}">返回</a>
+        </div>
+    </form>
 </div>
 {% endblock %}

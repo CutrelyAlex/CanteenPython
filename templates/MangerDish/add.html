@@ -1,124 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="content-wrapper">
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-12">
-                        <ol class="breadcrumb float-sm-left">
-                            <li class="breadcrumb-item"><a href="{{ url_for('dish.dish_list') }}">餐饮管理</a></li>
-                            <li class="breadcrumb-item active">菜品增加</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="content">
-            <style>
-                .flask-msg {
-                    position: relative;
-                    padding: 15px 15px;
-                    margin-bottom: 10px;
-                    border: 1px solid transparent;
-                    color: #004085;
-                    background-color: #cce5ff;
-                    border-color: #b8daff;
-                }
-            </style>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flash-messages">
-                        {% for message in messages %}
-                            <div class="flask-msg">{{ message }}</div>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h3 class="card-title">菜品信息增加</h3>
-                            </div>
-                            <form class="form-horizontal" method="post" enctype="multipart/form-data" novalidate>
-                                {{ form.csrf_token }}
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="{{ form.name.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.name.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.name }}
-                                            <span style="color: red">{{ form.name.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.category.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.category.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.category }}
-                                            <span style="color: red">{{ form.category.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.img_url.id_for_label }}" class="col-sm-2 col-form-label">菜品图片</label>
-                                        <div class="col-sm-10">
-                                            {{ form.img_url }}
-                                            <span style="color:red">{{ form.img_url.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.calories.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.calories.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.calories }}
-                                            <span style="color: red">{{ form.calories.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.location.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.location.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.location }}
-                                            <span style="color: red">{{ form.location.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.price.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.price.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.price }}
-                                            <span style="color: red">{{ form.price.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.allergens.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.allergens.label }}</label>
-                                        <div class="col-sm-10">
-                                            {{ form.allergens }}
-                                            <span style="color: red">{{ form.allergens.errors[0] }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="{{ form.description.id_for_label }}"
-                                            class="col-sm-2 col-form-label">{{ form.description.label }}</label>
-                                        <div class="col-sm-10">{{ form.description }}
-                                            <span style="color: red">{{ form.description.errors[0] }}</span>
-                                        </div>
-                                    </div>    
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-info">保存</button>
-                                        <button type="button" class="btn btn-default"><a href="{{ url_for('dish.dish_list' ) }}">返回</a>
-                                        </button>
-    {#                                    <span style="color:red">{{ info }}</span>#}
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>    
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h2 class="h5 mb-0">菜品信息增加</h2>
     </div>
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {{ form.csrf_token }}
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+                    {{ form.name }}
+                    <div class="text-danger small">{{ form.name.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.category.id_for_label }}" class="form-label">{{ form.category.label }}</label>
+                    {{ form.category }}
+                    <div class="text-danger small">{{ form.category.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.img_url.id_for_label }}" class="form-label">菜品图片</label>
+                    {{ form.img_url }}
+                    <div class="text-danger small">{{ form.img_url.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.location.id_for_label }}" class="form-label">{{ form.location.label }}</label>
+                    {{ form.location }}
+                    <div class="text-danger small">{{ form.location.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.calories.id_for_label }}" class="form-label">{{ form.calories.label }}</label>
+                    {{ form.calories }}
+                    <div class="text-danger small">{{ form.calories.errors[0] }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.price.id_for_label }}" class="form-label">{{ form.price.label }}</label>
+                    {{ form.price }}
+                    <div class="text-danger small">{{ form.price.errors[0] }}</div>
+                </div>
+                <div class="col-12">
+                    <label for="{{ form.allergens.id_for_label }}" class="form-label">{{ form.allergens.label }}</label>
+                    {{ form.allergens }}
+                    <div class="text-danger small">{{ form.allergens.errors[0] }}</div>
+                </div>
+                <div class="col-12">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                    {{ form.description }}
+                    <div class="text-danger small">{{ form.description.errors[0] }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex gap-2">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('dish.dish_list') }}">返回</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

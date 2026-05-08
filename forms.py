@@ -1,7 +1,8 @@
-from wtforms import StringField, TextAreaField, SelectField,FileField,FloatField,DateTimeField,IntegerField,MultipleFileField
+from datetime import datetime
+
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
-from datetime import datetime
+from wtforms import DateTimeField, FileField, FloatField, IntegerField, SelectField, StringField, TextAreaField
 from wtforms.validators import Length, DataRequired
 
 class DishForm(FlaskForm):

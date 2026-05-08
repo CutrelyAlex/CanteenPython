@@ -1,81 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
-<body class="hold-transition sidebar-mini">
-<!-- Site wrapper -->
-<div class="wrapper">
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>全部就餐详情</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="{{ url_for('stu.stu_list' ) }}">首页</a></li>
-              <li class="breadcrumb-item active">就餐详情</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <section class="content">
-
-      <!-- Default box -->
-      <div class="card card-solid">
-        <div class="card-body pb-0">
-          <div class="row">
-            {% for stu in get_stus %}
-            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-              <div class="card bg-light d-flex flex-fill">
-                <div class="card-header text-muted border-bottom-0">
-                  {{ stu.student_id }}
+<h2 class="h5 mb-3">全部就餐详情</h2>
+<div class="row g-3">
+    {% for stu in get_stus %}
+        <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between">
+                    <span>{{ stu.name }}</span>
+                    <span class="text-muted">{{ stu.student_id }}</span>
                 </div>
-                <div class="card-body pt-0">
-                  <div class="row">
-                    <div class="col-10">
-                      <h2 class="lead"><b>{{ stu.name }}</b></h2>
-                      <br>
-                      {% for dinings in stu.dining_info_list %}
-                        <p class="text-muted text-sm"><b>就餐时间：</b>{{ dinings.dining_time }}</p>
-                        <p class="text-muted text-sm"><b>菜品：</b>{% for dish in dinings.dishes %}{{ dish }} {% endfor %} </p>
-                        <p class="text-muted text-sm"><b>备注：</b>{{ dinings.remarks }}</p>
-                        <p class="text-muted text-sm"><b>位置：</b>{{ dinings.location }}</p>
-                        <p class="text-muted text-sm"><b>菜品图片：</b></p>
-                      {% endfor %}
-                    </div>
+                <div class="card-body">
                     {% for dining in stu.dining_info_list %}
-                      {% for img in dining.images %}
-                        <div class="col-4 text-center">
-                      <img src="../../{{img}}" alt="无" class="img-sqaure img-fluid">
-                    </div>
-                      {% endfor %}
+                        <div class="border rounded p-3 mb-3">
+                            <p class="mb-1"><strong>就餐时间：</strong>{{ dining.dining_time }}</p>
+                            <p class="mb-1"><strong>菜品：</strong>{% for dish in dining.dishes %}{{ dish }} {% endfor %}</p>
+                            <p class="mb-1"><strong>备注：</strong>{{ dining.remarks }}</p>
+                            <p class="mb-2"><strong>位置：</strong>{{ dining.location }}</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for img in dining.images %}
+                                    <img src="../../{{ img }}" alt="无" class="rounded border" width="72" height="72">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-muted mb-0">暂无就餐记录</p>
                     {% endfor %}
-                  </div>
                 </div>
-              </div>
             </div>
-            {% endfor %}
-          </div>
         </div>
-      </div>
-      <!-- /.card -->
-
-    </section>
-
-  </div>
-
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+    {% endfor %}
 </div>
-<!-- ./wrapper -->
-</body>
 {% endblock %}
-</html>

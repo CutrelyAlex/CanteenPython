@@ -1,362 +1,115 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="content-wrapper" style="min-height: 624.4px;">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">可视化</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="{{ url_for('index' ) }}">首页</a></li>
-              <li class="breadcrumb-item active">可视化</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <section class="content">
-      <div class="container-fluid text-center">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="card-title">菜品大数据</h5>
-  
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-8">
-                      <p class="text-center">
-                        <strong>最新更新:{{ format_now }}</strong>
-                      </p>
-                      <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                        <!-- Sales Chart Canvas -->
-                        <canvas id="bar_2Chart" height="225" style="height: 180px; display: block; width: 463px;" width="578" class="chartjs-render-monitor"></canvas>
-                      </div>
-                      <!-- /.chart-responsive -->
-                       <p class="text-center">
-                        <strong>菜品位置信息</strong>
-                        </p>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-4">
-                      <p class="text-center">
-                        <strong>菜品位置分布</strong>
-                      </p>
-  
-                      <div class="progress-group">
-                        西餐厅
-                        <span class="float-right"><b>{{ location_dishes_num[4] }}</b></span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-primary" style="width: {{ location_dishes_num[4]/all_dishes*100 }}%"></div>
-                        </div>
-                      </div>
-                      <!-- /.progress-group -->
-  
-                      <div class="progress-group">
-                        北区
-                        <span class="float-right"><b>{{ location_dishes_num[0] }}</b></span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-danger" style="width: {{ location_dishes_num[0]/all_dishes*100 }}%"></div>
-                        </div>
-                      </div>
-  
-                      <!-- /.progress-group -->
-                      <div class="progress-group">
-                        <span class="progress-text">南区</span>
-                        <span class="float-right"><b>{{ location_dishes_num[1] }}</b></span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-success" style="width: {{ location_dishes_num[1]/all_dishes*100 }}%"></div>
-                        </div>
-                      </div>
-  
-                      <!-- /.progress-group -->
-                      <div class="progress-group">
-                        南堕落街
-                        <span class="float-right"><b>{{ location_dishes_num[2] }}</b></span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-warning" style="width: {{ location_dishes_num[2]/all_dishes*100 }}%"></div>
-                        </div>
-                      </div>
-                      <!-- /.progress-group -->
-                      <div class="progress-group">
-                        北堕落街
-                        <span class="float-right"><b>{{ location_dishes_num[3] }}</b></span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-cyan" style="width: {{ location_dishes_num[3]/all_dishes*100 }}%"></div>
-                        </div>
-                      </div>
-                      <div class="progress-group">
-                        竹韵食堂
-                        <span class="float-right"><b>{{ location_dishes_num[5] }}</b></span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-agenta" style="width: {{ location_dishes_num[5]/all_dishes*100 }}%"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- /.col -->
-                  </div>
-                  <!-- /.row -->
-                </div>
-                <!-- ./card-body -->
-                <div class="card-footer">
-                  <div class="row">
-                    <div class="col-sm-3 col-6">
-                      <div class="description-block border-right">
-                        <!-- <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span> -->
-                        <h5 class="description-header">{{ all_dishes }}</h5>
-                        <span class="description-text">菜品数量</span>
-                      </div>
-                      <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-6">
-                      <div class="description-block border-right">
-                        <!-- <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span> -->
-                        <h5 class="description-header">{{ len_stu }}</h5>
-                        <span class="description-text">学生人数</span>
-                      </div>
-                      <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-sm-3 col-6">
-                      <div class="description-block border-right">
-                        <!-- <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span> -->
-                        <!-- <h5 class="description-header"></h5> -->
-                        <span class="description-text">未开发</span>
-                      </div>
-                      <!-- /.description-block -->
-                    </div>
-                    <!-- /.col -->
-                  </div>
-                  <!-- /.row -->
-                </div>
-                <!-- /.card-footer -->
-              </div>
-              <!-- /.card -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">数据看板</h1>
+    <span class="text-muted">最新更新：{{ format_now }}</span>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6 text-muted">菜品数量</h2>
+                <p class="display-6 mb-0">{{ all_dishes }}</p>
             </div>
-            <!-- /.col -->
-          </div>
-        <div class="row">
-            <section class="col-lg-6 connectedSortable">
-                <!-- PIE CHART -->
-                <div class="card card-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">菜品消费情况（前五位）</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </section>
-            <section class="col-lg-6 connectedSortable">
-
-                <!-- BAR CHART -->
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">就餐时间</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas id="barChart"
-                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </section>
-            <section class="col-lg-6 connectedSortable">
-
-              <!-- BAR CHART -->
-              <div class="card card-success">
-                  <div class="card-header">
-                      <h3 class="card-title">学生就餐位置次数</h3>
-
-                      <div class="card-tools">
-                          <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                              <i class="fas fa-minus"></i>
-                          </button>
-                          <button type="button" class="btn btn-tool" data-card-widget="remove">
-                              <i class="fas fa-times"></i>
-                          </button>
-                      </div>
-                  </div>
-                  <div class="card-body">
-                      <div class="chart">
-                          <canvas id="polarAreaChart"
-                                  style="min-height: 250px; height: 250px; max-height: 500px; max-width: 100%;"></canvas>
-                      </div>
-                  </div>
-                  <!-- /.card-body -->
-              </div>
-              <!-- /.card -->
-          </section>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <script>
-    $(function(){
-        var charData = {
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6 text-muted">学生人数</h2>
+                <p class="display-6 mb-0">{{ len_stu }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6">菜品位置分布</h2>
+                <canvas id="bar_2Chart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6">菜品消费情况（前五位）</h2>
+                <canvas id="pieChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6">就餐时间</h2>
+                <canvas id="barChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6">学生就餐位置次数</h2>
+                <canvas id="polarAreaChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        const charData = {
             labels: {{ labels|safe }},
-            datasets: [
-                {
-                    label: '123',
-                    backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-                    data: {{ datas }},
-                },
-            ]
-        }
-        var charData_2 = {
+            datasets: [{backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'], data: {{ datas }}}]
+        };
+        const charData2 = {
             labels: {{ time_labels|safe }},
-            datasets: [
-                {
-                    label: '就餐时间',
-                    backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-                    data: {{ time_num }},
-                },
-            ]
-        }
-        var charData_3 = {
+            datasets: [{label: '就餐时间', backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'], data: {{ time_num }}}]
+        };
+        const charData3 = {
             labels: {{ location_labels|safe }},
-            datasets: [
-                {
-                    label: '就餐位置',
-                    backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-                    data: {{ location_num }},
-                },
-            ]
-        }
-
-        var charData_4 = {
+            datasets: [{label: '就餐位置', backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'], data: {{ location_num }}}]
+        };
+        const charData4 = {
             labels: {{ location_dishes_labels|safe }},
-            datasets: [
-                {
-                    label: '菜品位置',
-                    backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-                    data: {{ location_dishes_num }},
-                },
-            ]
-        }
+            datasets: [{label: '菜品位置', backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'], data: {{ location_dishes_num }}}]
+        };
 
-        var maxDataValue1 = Math.max.apply(null, {{ time_num }});
-        var polarAreaChartCanvas = $('#polarAreaChart').get(0).getContext('2d')
-        var polarAreaData = charData_3
-        var polarAreaOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            scale: {
-                ticks: {
-                    beginAtZero: true,
-                    max: maxDataValue1 + 2
-                },
-                reverse: false
-            }
-        }
-        var polarAreaChart = new Chart(polarAreaChartCanvas, {
+        const maxCount = Math.max.apply(null, {{ time_num }});
+
+        new Chart($('#polarAreaChart').get(0).getContext('2d'), {
             type: 'polarArea',
-            data: polarAreaData,
-            options: polarAreaOptions
-        })
-
-        var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-        var pieData = charData
-        var pieOptions = {
-            maintainAspectRatio: false,
-            responsive: true,
-        }
-        
-        var pieChart = new Chart(pieChartCanvas, {
+            data: charData3,
+            options: {responsive: true, maintainAspectRatio: false, scale: {ticks: {beginAtZero: true, max: maxCount + 2}}}
+        });
+        new Chart($('#pieChart').get(0).getContext('2d'), {
             type: 'pie',
-            data: pieData,
-            options: pieOptions
-        })
-        
-        var maxDataValue = Math.max.apply(null, {{ time_num }});
-        var barChartCanvas = $('#barChart').get(0).getContext('2d')
-        var barchartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            datasetFill: false,
-            legend: {
-                display: false
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 1,
-                        max: maxDataValue + 2
-                    }
-                }]
-            }
-        }
-        var barChart = new Chart(barChartCanvas, {
+            data: charData,
+            options: {maintainAspectRatio: false, responsive: true}
+        });
+        new Chart($('#barChart').get(0).getContext('2d'), {
             type: 'bar',
-            data: charData_2,
-            options: barchartOptions
-        })
-
-        var barChartCanvas = $('#bar_2Chart').get(0).getContext('2d')
-        var barchartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            datasetFill: false,
-            legend: {
-                display: false
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 1,
-                    
-                    }
-                }]
+            data: charData2,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {display: false},
+                scales: {yAxes: [{ticks: {beginAtZero: true, stepSize: 1, max: maxCount + 2}}]}
             }
-        }
-        var barChart = new Chart(barChartCanvas, {
+        });
+        new Chart($('#bar_2Chart').get(0).getContext('2d'), {
             type: 'bar',
-            data: charData_4,
-            options: barchartOptions
-        })
-
-    })
-  </script>
-  
+            data: charData4,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {display: false},
+                scales: {yAxes: [{ticks: {beginAtZero: true, stepSize: 1}}]}
+            }
+        });
+    });
+</script>
 {% endblock %}
